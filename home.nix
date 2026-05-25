@@ -5,66 +5,40 @@
   home.homeDirectory = "/home/${user}";
   home.stateVersion = "25.11";
 
-  # ==================== ПАКЕТЫ ПОЛЬЗОВАТЕЛЯ ====================
   home.packages = with pkgs; [
-    # Браузеры
     firefox
-    google-chrome  # На случай если нужен Chrome
-    
-    # Мессенджеры
+    google-chrome
     telegram-desktop
     discord
-    
-    # Офисные
     libreoffice
-    
-    # Медиа
-    mpv               # Видеоплеер
-    imv               # Просмотр изображений (Wayland)
-    nautilus          # Файловый менеджер
-    
-    # Разработка
+    mpv
+    imv
+    nautilus
     git
     vscode
     python3
-    
-    # Шрифты
     noto-fonts-emoji
   ];
 
-  # ==================== ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ ====================
+  # Переменные окружения
   home.sessionVariables = {
-    # Wayland
     XDG_SESSION_TYPE = "wayland";
-    # Niri
-    NIRI_CONFIG = "${config.xdg.configHome}/niri/config.kdl";
-    # OpenGL
+    MOZ_ENABLE_WAYLAND = "1";
+    QT_QPA_PLATFORM = "wayland";
+    SDL_VIDEODRIVER = "wayland";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
     __GL_GSYNC_ALLOWED = "0";
     __GL_VRR_ALLOWED = "0";
-    # Firefox
-    MOZ_ENABLE_WAYLAND = "1";
-    # Qt
-    QT_QPA_PLATFORM = "wayland";
-    # SDL
-    SDL_VIDEODRIVER = "wayland";
-    # Java
-    _JAVA_AWT_WM_NONREPARENTING = "1";
   };
 
-  # ==================== FIREFOX (NATIVE WAYLAND) ====================
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox;
-  };
-
-  # ==================== GIT ====================
+  # Git
   programs.git = {
     enable = true;
     userName = "Твоё Имя";
     userEmail = "твоя@почта.com";
   };
 
-  # ==================== WAYBAR (ОПЦИОНАЛЬНО) ====================
+  # Waybar
   programs.waybar = {
     enable = true;
     settings = {
@@ -113,7 +87,6 @@
         border-radius: 0;
         min-height: 0;
       }
-      
       window#waybar {
         background: #1a1b26;
         color: #a9b1d6;
@@ -121,8 +94,7 @@
     '';
   };
 
-  # ==================== ДЕЛАЕМ NIRI ДЕФОЛТНЫМ СЕАНСОМ ====================
-  # Чтобы при логине в tty запускался niri
+  # Автостарт niri при входе в tty
   programs.bash.profileExtra = ''
     if [ -z "$DISPLAY" ] && [ "''${XDG_VTNR}" -eq 1 ]; then
       exec niri-session
