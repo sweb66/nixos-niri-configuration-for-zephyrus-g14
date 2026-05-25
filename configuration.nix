@@ -9,6 +9,27 @@
     efi.canTouchEfiVariables = true;
   };
 
+
+ # ==================== ФАЙЛОВЫЕ СИСТЕМЫ ====================
+  # !! ВАЖНО: замени UUID на свои !!
+  # Узнай свои UUID командой: lsblk -f
+  
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/ЗАМЕНИ_НА_UUID_КОРНЕВОГО_РАЗДЕЛА";
+    fsType = "ext4"; # или btrfs, xfs - что использовал при установке
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/ЗАМЕНИ_НА_UUID_BOOT_РАЗДЕЛА";
+    fsType = "vfat";
+  };
+
+  # Если есть swap раздел
+  swapDevices = [
+    { device = "/dev/disk/by-uuid/ЗАМЕНИ_НА_UUID_SWAP"; }
+  ];
+
+
   # ==================== ЛОКАЛИЗАЦИЯ ====================
   time.timeZone = "Europe/Moscow";
   i18n.defaultLocale = "ru_RU.UTF-8";
