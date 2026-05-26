@@ -1,5 +1,12 @@
 { config, lib, pkgs, inputs, user, ... }:
 
+let
+  discord-latest = pkgs.discord.overrideAttrs (old: {
+    src = builtins.fetchTarball {
+      url = "https://discord.com/api/download?platform=linux&format=tar.gz";
+    };
+  });
+in
 {
   home.username = "${user}";
   home.homeDirectory = "/home/${user}";
@@ -9,7 +16,7 @@
     firefox
     google-chrome
     telegram-desktop
-    discord
+    discord-latest
     libreoffice
     mpv
     imv
@@ -17,10 +24,9 @@
     git
     vscode
     python3
-    noto-fonts-emoji
+    noto-fonts-color-emoji
   ];
 
-  # Переменные окружения
   home.sessionVariables = {
     XDG_SESSION_TYPE = "wayland";
     MOZ_ENABLE_WAYLAND = "1";
@@ -31,14 +37,12 @@
     __GL_VRR_ALLOWED = "0";
   };
 
-  # Git
   programs.git = {
     enable = true;
     userName = "Твоё Имя";
     userEmail = "твоя@почта.com";
   };
 
-  # Waybar
   programs.waybar = {
     enable = true;
     settings = {
@@ -94,7 +98,6 @@
     '';
   };
 
-  # Автостарт niri при входе в tty
   programs.bash.profileExtra = ''
     if [ -z "$DISPLAY" ] && [ "''${XDG_VTNR}" -eq 1 ]; then
       exec niri-session
