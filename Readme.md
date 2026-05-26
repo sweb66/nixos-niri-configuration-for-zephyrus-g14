@@ -45,8 +45,7 @@
 
 ### 1. Клонируем репозиторий
 
-```bash
-git clone https://github.com/твой-username/твой-репо.git /tmp/nixos-config
+git clone https://github.com/sweb66/nixos-niri-configuration-for-zephyrus-g14 /tmp/nixos-config
 sudo cp -r /tmp/nixos-config/* /etc/nixos/
 cd /etc/nixos
 ```
